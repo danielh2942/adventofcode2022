@@ -1,8 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <utility>
-#include <vector>
 
 #define ROCK		1
 #define PAPER		2
