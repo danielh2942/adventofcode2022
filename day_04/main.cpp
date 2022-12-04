@@ -14,30 +14,21 @@ int main() {
 
 	std::regex line_form{"([0-9]+)-([0-9]+),([0-9]+)-([0-9]+)"};
 	std::string buff;
+	int a,b,c,d;
 	while(std::getline(fs, buff)) {
-		int a,b,c,d;
 		std::smatch matches;
 		
 		if(! std::regex_search(buff,matches, line_form)) continue;
 		
-		a = std::atoi(matches[1].str().c_str());
-		b = std::atoi(matches[2].str().c_str());
-		c = std::atoi(matches[3].str().c_str());
-		d = std::atoi(matches[4].str().c_str());
+		a = std::stoi(matches[1]);
+		b = std::stoi(matches[2]);
+		c = std::stoi(matches[3]);
+		d = std::stoi(matches[4]);
 
 		// Part 1
-		if((a>=c && b <= d) || (c>=a && d<=b)) {
-			tally++;
-			overlaps++;
-			continue;
-		}
-
-		if((a >= c && a <= d) ||
-		   (b >= c && b <= d) ||
-		   (c >= a && c <= b) ||
-		   (d >= a && d <= b)) {
-			overlaps++;
-		}
+		tally += ((a-c) * (b-d) <= 0);
+		// Part 2
+		overlaps += ((a-d) * (b-c) <= 0);
 
 	}
 
