@@ -1,7 +1,8 @@
+#include <cstdint>
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <set>
+#include <bit>
 
 int main() {
 	std::ifstream fs{"input.txt"};
@@ -11,10 +12,18 @@ int main() {
 	std::string buff;
 	std::getline(fs,buff);
 
+	// ASCII [A-z] has a distance of 62 so I can bitmask a uint64
+	// and then use popcount to count the number of activated bits
+
 	// Part 1
 	for(int i = 0; i < buff.size() - 4; i++) {
-		std::set<char> mSet{buff[i],buff[i+1],buff[i+2],buff[i+3]};
-		if(mSet.size() == 4) {
+		std::uint64_t bitmask = 0U;
+		bitmask |= 1U << (buff[i] - 'A');
+		bitmask |= 1U << (buff[i+1] - 'A');
+		bitmask |= 1U << (buff[i+2] - 'A');
+		bitmask |= 1U << (buff[i+3] - 'A');
+
+		if(std::popcount(bitmask) == 4) {
 			std::cout << i + 4 << std::endl;
 			break;
 		}
@@ -22,11 +31,11 @@ int main() {
 
 	// Part 2
 	for(int i = 0; i < buff.size() - 14; i++) {
-		std::set<char> mSet2{};
+		std::uint64_t bitmask = 0U;
 		for(int j = 0; j < 14; j++) {
-			mSet2.insert(buff[i+j]);
+			bitmask |= 1U << (buff[i+j] - 'A');
 		}
-		if(mSet2.size() == 14) {
+		if(std::popcount(bitmask) == 14) {
 			std::cout << i + 14 << std::endl;
 			break;
 		}
